@@ -2,20 +2,29 @@
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 var yosay = require('yosay');
+var _ = require('lodash');
 
 module.exports = yeoman.generators.Base.extend({
+  constructor: function () {
+    yeoman.generators.Base.apply(this, arguments);
+
+    // Setup arguments
+    this.argument('modulename', { type: String, required: true });
+    this.modulename = _.camelCase(this.modulename);
+  },
+
   prompting: function () {
     var done = this.async();
 
     // Have Yeoman greet the user.
     this.log(yosay(
-      'Welcome to the awesome ' + chalk.red('MeanjsScrud') + ' generator!'
+      'A simple CRUD generator to simplify things: ' + chalk.red('MeanjsScrud')
     ));
 
     var prompts = [{
       type: 'confirm',
-      name: 'someOption',
-      message: 'Would you like to enable this option?',
+      name: 'doTheThing',
+      message: 'Would you like to generate the simple CRUD module ' + this.modulename + '?',
       default: true
     }];
 
@@ -29,29 +38,31 @@ module.exports = yeoman.generators.Base.extend({
 
   writing: {
     app: function () {
-      this.fs.copy(
-        this.templatePath('_package.json'),
-        this.destinationPath('package.json')
-      );
-      this.fs.copy(
-        this.templatePath('_bower.json'),
-        this.destinationPath('bower.json')
-      );
-    },
+      if (this.props.doTheThing)
+      {
+        var parent = this;
 
-    projectfiles: function () {
-      this.fs.copy(
-        this.templatePath('editorconfig'),
-        this.destinationPath('.editorconfig')
-      );
-      this.fs.copy(
-        this.templatePath('jshintrc'),
-        this.destinationPath('.jshintrc')
-      );
-    }
+        this.directory(this.templatePath(), this.templatePath(), function (body, src, des, options) { 
+          des = src.replace(parent.templatePath(), 
+            parent.destinationPath('modules')).replace(/crud/g, parent.modulename);
+          
+          parent.fs.copyTpl(src, des, 
+            {
+              crudName: parent.modulename, 
+              crudNameCap: _.capitalize(parent.modulename) 
+            }
+          ); 
+
+          return body;
+        });
+      } else {
+        this.log("Exiting!");
+      }
+    },
   },
 
   install: function () {
+    // This is probably optional
     this.installDependencies();
   }
 });

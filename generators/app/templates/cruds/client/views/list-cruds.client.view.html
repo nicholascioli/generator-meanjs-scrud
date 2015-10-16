@@ -1,0 +1,20 @@
+<section ng-controller="<%= crudNameCap %>sController" ng-init="find()">
+  <div class="page-header">
+    <h1><%= crudNameCap %>s</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="<%= crudName %> in <%= crudName %>s" ui-sref="<%= crudName %>s.view({<%= crudName %>Id: <%= crudName %>._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="<%= crudName %>.created | date:'mediumDate'"></span>
+        by
+        <span ng-bind="<%= crudName %>.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="<%= crudName %>.title"></h4>
+      <p class="list-group-item-text" ng-bind="<%= crudName %>.content"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="<%= crudName %>s.$resolved && !<%= crudName %>s.length">
+    No <%= crudName %>s yet, why don't you <a ui-sref="<%= crudName %>s.create">create one</a>?
+  </div>
+</section>
