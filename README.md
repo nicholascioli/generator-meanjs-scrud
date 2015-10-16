@@ -21,7 +21,7 @@ yo meanjs-scrud MODULE_NAME
 
 That will generate a scaffold located in `modules/MODULE_NAME` that is **identical** to the example articles module. This is all that this module does at the moment.
 
-Feel free to fork and add on to this module while an official MEAN.js is still not available.
+Feel free to fork and add on to this module while the official MEAN.js is still not available.
 
 ## License
 
