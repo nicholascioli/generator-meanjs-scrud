@@ -63,6 +63,6 @@ module.exports = yeoman.generators.Base.extend({
 
   install: function () {
     // This is probably optional
-    this.installDependencies();
+    //this.installDependencies();
   }
 });
